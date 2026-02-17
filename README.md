@@ -23,7 +23,7 @@
 
 ## What is this?
 
-A hands-on collection of **recipes** for building AI agents that perform real cybersecurity tasks. Each recipe is a self-contained, working example that you can run, modify, and learn from.
+A hands-on collection of **recipes** for building AI agents that perform real cybersecurity tasks. Each recipe is a self-contained, working example you can run, modify, and learn from.
 
 No theory walls. No toy examples. **Real agents, real tools, real security.**
 
@@ -33,89 +33,50 @@ No theory walls. No toy examples. **Real agents, real tools, real security.**
 
 ### Beginner
 
-| # | Recipe | What it does | Tools |
+| # | Recipe | What it does | Stack |
 |---|--------|-------------|-------|
-| 01 | [Recon Agent](recipes/01-recon-agent/) | Enumerates subdomains, detects technologies, and identifies open ports for a target domain | Python, httpx, subfinder |
-| 02 | [CVE Analyzer](recipes/02-cve-analyzer/) | Takes a CVE ID, fetches details from NVD, and explains the vulnerability with remediation steps | Python, NVD API |
-| 03 | [Header Inspector](recipes/03-header-inspector/) | Analyzes HTTP security headers and scores a website's security posture | Python, requests |
-| 04 | [Log Anomaly Detector](recipes/04-log-anomaly-detector/) | Monitors log files and uses an LLM to identify suspicious patterns and potential intrusions | Python, watchdog |
+| 01 | [**Recon Agent**](recipes/01-recon-agent/) | Enumerates subdomains, detects technologies, scans ports, then uses an LLM to analyze the full attack surface and generate a professional recon report | Python, subfinder, httpx, nmap, OpenAI |
+| 02 | [**CVE Lookup Agent**](recipes/02-cve-lookup/) | Natural language vulnerability research — ask "What critical CVEs affect Apache 2.4?" and get NVD data, EPSS exploit probability, and public exploit status in one answer | Python, NVD API, EPSS API, Claude tool_use |
+| 03 | [**Phishing Analyzer**](recipes/03-phishing-analyzer/) | Multi-layer email analysis: header extraction, URL scanning via VirusTotal, SPF/DKIM/DMARC verification, and LLM-powered social engineering detection with confidence scoring | Python, VirusTotal API, CrewAI |
+| 04 | [**Security News Digest**](recipes/04-security-news-digest/) | Daily automated briefing — aggregates RSS feeds from Bleeping Computer, The Hacker News, CISA advisories, categorizes threats, and delivers an executive summary to Slack or markdown | Python, RSS feeds, LangChain, Slack API |
 
 ### Intermediate
 
-| # | Recipe | What it does | Tools |
+| # | Recipe | What it does | Stack |
 |---|--------|-------------|-------|
-| 05 | [Nuclei AI Triager](recipes/05-nuclei-ai-triager/) | Runs Nuclei scans, then uses an LLM to prioritize findings by real-world exploitability | Python, Nuclei |
-| 06 | [OSINT Profiler](recipes/06-osint-profiler/) | Gathers public information about a target (emails, subdomains, social media) and builds an intelligence report | Python, theHarvester, Sherlock |
-| 07 | [Malware Analyzer](recipes/07-malware-analyzer/) | Static analysis of suspicious files — extracts strings, checks hashes against VirusTotal, explains behavior | Python, YARA, VirusTotal API |
-| 08 | [Security RAG Assistant](recipes/08-security-rag/) | A RAG-powered assistant that answers questions from your own security documentation, playbooks, and policies | Python, ChromaDB, LangChain |
+| 05 | [**Nuclei AI Triager**](recipes/05-nuclei-triager/) | Ingests Nuclei scan JSON output, enriches findings with EPSS scores and CISA KEV data, then reasons about business context to rank vulnerabilities by real-world exploitability | Python, Nuclei, EPSS API, CISA KEV, LangGraph |
+| 06 | [**Log Analysis RAG**](recipes/06-log-analysis-rag/) | SIEM copilot — indexes security logs in a vector DB, then answers natural language queries like "Show suspicious connections to non-standard ports in the last 24 hours" with correlation analysis | Python, ChromaDB, LangChain RAG, embeddings |
+| 07 | [**IaC Security Scanner**](recipes/07-iac-scanner/) | Analyzes Terraform and Kubernetes manifests for misconfigurations using Checkov/Trivy, then an LLM explains the real risk of each finding and generates remediation PRs | Python, Checkov, Trivy, GitHub API, OpenAI Agents SDK |
+| 08 | [**Threat Intel RAG (MITRE ATT&CK)**](recipes/08-threat-intel-rag/) | Indexes the full MITRE ATT&CK knowledge base into a vector store — answer questions like "What techniques does APT29 use for persistence?" and map IoCs to TTPs with detection suggestions | Python, MITRE ATT&CK STIX, ChromaDB, LangChain RAG |
 
 ### Advanced
 
-| # | Recipe | What it does | Tools |
+| # | Recipe | What it does | Stack |
 |---|--------|-------------|-------|
-| 09 | [Bug Bounty Recon Pipeline](recipes/09-bb-recon-pipeline/) | Full automated recon: subdomain enum → alive check → port scan → tech detect → vuln scan → AI-prioritized report | Python, subfinder, httpx, Nuclei |
-| 10 | [Multi-Agent Pentest Team](recipes/10-multi-agent-pentest/) | Swarm of specialized agents (recon, scanner, exploit, reporter) that coordinate a penetration test | Python, OpenAI Agents SDK |
-| 11 | [Network Traffic Analyzer](recipes/11-traffic-analyzer/) | Captures and analyzes network traffic with AI to detect anomalies, C2 beacons, and data exfiltration | Python, Scapy, pyshark |
-| 12 | [Incident Response Orchestrator](recipes/12-ir-orchestrator/) | Automated incident response: triages alerts, gathers evidence, contains threats, generates timeline report | Python, Wazuh API |
+| 09 | [**Multi-Agent Pentest Pipeline**](recipes/09-pentest-pipeline/) | Orchestrates a team of specialized agents (recon, scanner, exploiter, reporter) that coordinate a full penetration test through shared memory and handoffs | Python, CrewAI/LangGraph, nmap, Nuclei, Docker, MCP |
+| 10 | [**SOC Alert Triage Agent**](recipes/10-soc-triage/) | Autonomous Tier-1 SOC analyst — consumes SIEM alerts in real-time, investigates IoCs against threat intel feeds, classifies true/false positives, and escalates complex cases to humans | Python, LangGraph, Splunk/Elastic API, VirusTotal, Shodan |
+| 11 | [**Malware Analysis Assistant**](recipes/11-malware-analysis/) | Full analysis pipeline: string extraction, YARA matching, static analysis via Ghidra MCP, sandbox detonation, VirusTotal lookup — produces a report with TTPs mapped to MITRE ATT&CK | Python, YARA, Ghidra MCP, VirusTotal API, Docker |
+| 12 | [**CTF Auto-Solver**](recipes/12-ctf-solver/) | Autonomous CTF player for web, crypto, forensics, and reversing — plan-and-execute architecture that selects tools, iterates on failed attempts, and learns from each challenge | Python, LangGraph, pwntools, z3, CyberChef, Docker |
 
 ---
 
 ## Quick Start
 
-### Prerequisites
-
 ```bash
-# Python 3.10+
-python --version
-
-# Install base dependencies
-pip install security-agent-cookbook
-
-# Or clone and install
+# Clone the repo
 git clone https://github.com/skyvanguard/security-agent-cookbook.git
 cd security-agent-cookbook
+
+# Install base dependencies
 pip install -e .
-```
 
-### Configure your LLM
-
-```bash
-# Create .env with your preferred provider
+# Configure your LLM provider
 cp .env.example .env
+# Edit .env with your API keys
 
-# Supports: OpenAI, Anthropic, DeepSeek, Ollama (local)
-```
-
-### Run your first recipe
-
-```bash
-# Run the Recon Agent
+# Run your first recipe
 cd recipes/01-recon-agent
 python agent.py --target example.com
-```
-
----
-
-## Project Structure
-
-```
-security-agent-cookbook/
-├── recipes/
-│   ├── 01-recon-agent/
-│   │   ├── agent.py          # Main agent code
-│   │   ├── README.md          # Recipe documentation
-│   │   ├── requirements.txt   # Recipe-specific deps
-│   │   └── example_output/    # Sample output
-│   ├── 02-cve-analyzer/
-│   │   └── ...
-│   └── .../
-├── shared/
-│   ├── llm.py                 # LLM provider abstraction
-│   ├── tools.py               # Common security tools wrapper
-│   └── report.py              # Report generation utilities
-├── .env.example
-├── pyproject.toml
-└── README.md
 ```
 
 ---
@@ -125,10 +86,43 @@ security-agent-cookbook/
 | Provider | Models | Local? |
 |----------|--------|--------|
 | OpenAI | GPT-4o, GPT-4o-mini | No |
-| Anthropic | Claude Sonnet, Claude Haiku | No |
+| Anthropic | Claude Sonnet 4.5, Claude Haiku | No |
 | DeepSeek | DeepSeek-Chat, DeepSeek-Coder | No |
 | Ollama | Llama, Qwen, Mistral, any GGUF | Yes |
 | Google | Gemini Pro, Gemini Flash | No |
+
+## Frameworks Covered
+
+| Framework | Used in Recipes |
+|-----------|----------------|
+| LangChain / LangGraph | #01, #04, #05, #06, #08, #09, #10, #12 |
+| CrewAI | #03, #09 |
+| OpenAI Agents SDK | #02, #07 |
+| Claude tool_use | #02, #07, #11 |
+| MCP Servers | #09, #11 |
+| RAG (ChromaDB) | #06, #08 |
+
+---
+
+## Project Structure
+
+```
+security-agent-cookbook/
+├── recipes/
+│   ├── 01-recon-agent/
+│   │   ├── agent.py            # Main agent code
+│   │   ├── README.md           # Recipe docs + example output
+│   │   └── requirements.txt    # Recipe-specific deps
+│   ├── 02-cve-lookup/
+│   └── .../
+├── shared/
+│   ├── llm.py                  # LLM provider abstraction
+│   ├── tools.py                # Common security tools wrapper
+│   └── report.py               # Report generation utilities
+├── .env.example
+├── pyproject.toml
+└── README.md
+```
 
 ---
 
@@ -138,7 +132,7 @@ security-agent-cookbook/
 2. **Real tools, not mocks** — agents interact with actual security tools
 3. **Provider agnostic** — swap LLMs with a single env variable
 4. **Educational first** — code is commented and explained
-5. **Responsible by default** — built-in scope checking and authorization
+5. **Responsible by default** — built-in scope checking and authorization reminders
 
 ---
 
@@ -146,19 +140,11 @@ security-agent-cookbook/
 
 We welcome new recipes! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-### Recipe Template
-
-Every recipe should include:
-- `agent.py` — The main agent implementation
-- `README.md` — What it does, how to run it, example output
-- `requirements.txt` — Recipe-specific dependencies
-- `example_output/` — Sample output so users know what to expect
-
 ---
 
 ## Disclaimer
 
-All recipes are designed for **authorized security testing and educational purposes only**. Always obtain proper authorization before testing systems you do not own. The authors are not responsible for misuse.
+All recipes are for **authorized security testing and educational purposes only**. Always obtain proper authorization before testing systems you do not own.
 
 ---
 
